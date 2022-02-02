@@ -16,7 +16,7 @@
     	String url = "jdbc:mysql://localhost:3306/studentinfo";
     	String username="root";
     	String password="Mysql10@#$";
-    	String sql = "select * from admin where email="+email;
+    	String sql = "select * from stdinfo where email="+email;
     	Class.forName("com.mysql.jdbc.Driver");
     	Connection con = DriverManager.getConnection(url,username,password);
     	Statement st= con.createStatement();
@@ -24,18 +24,18 @@
     	rs.next();
     	
 %>
-<%=rs.getString(3) %>
+<%=rs.getString(7) %>
 
 <%
 String passw=request.getParameter("password");%>
 <%
-if(request.getParameter("password").equals(rs.getString(3))){
-response.sendRedirect("http://localhost:8080/StudentInfoPDFs/dashboard.jsp");
+if(request.getParameter("password").equals(rs.getString(7))){
+response.sendRedirect("http://localhost:8080/StudentInfoPDFs/info.jsp?email="+request.getParameter("email"));
 }
 else
 {
-	response.sendRedirect("http://localhost:8080/StudentInfoPDFs");
-}
+	response.sendRedirect("http://localhost:8080/StudentInfoPDFs?loginfail=true");
+} 
 
 %>
 </body>

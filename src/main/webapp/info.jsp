@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*"  %>
+
+ 
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,9 +13,24 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Student - Login</title>
+  <%		
+		String email = "'"+request.getParameter("email")+"'";
+		
+    	String url = "jdbc:mysql://localhost:3306/studentinfo";
+    	String username="root";
+    	String password="Mysql10@#$";
+    	String sql = "select * from stdinfo where email="+email;
+    	Class.forName("com.mysql.jdbc.Driver");
+    	Connection con = DriverManager.getConnection(url,username,password);
+    	Statement st= con.createStatement();
+    	ResultSet rs =st.executeQuery(sql);
+    	rs.next();
+    	
+%>
+    <title><%=rs.getString(2)%> <%=rs.getString(3)%></title>
   </head>
   <body>
+  
   
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -27,14 +45,14 @@
     -->
      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">StudentInfoPDFs</a>
+    <a class="navbar-brand" href="http://localhost:8080/StudentInfoPDFs/">StudentInfoPDFs</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="http://localhost:8080/StudentInfoPDFs/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">About</a>
@@ -43,42 +61,77 @@
     </div>
   </div>
 </nav>
-    
-<div class="mx-5 mt-5">
-<h2>Nilesh Parab</h2>
+ 
+<div id="data" >
+<div class="mx-5 mt-5" >
+<h2><%=rs.getString(2)%> <%=rs.getString(3)%></h2>
 </div>
 
-<div class="mx-5 my-5">
+<div class="mx-5 mt-5 mb-4">
 <div class="bd-example">
   <dl>
     <dt>Full Name</dt>
-    <dd>Nilesh Parab</dd>
+    <dd><%=rs.getString(2)%> <%=rs.getString(3)%></dd>
+    
+    <dt>Roll Number</dt>
+    <dd><%=rs.getString(1)%></dd>
+    
     <dt>Email</dt>
-    <dd>nileshparab5623@gmail.com</dd>
+    <dd><%=rs.getString(6) %></dd>
+    
     <dt>Phone Number</dt>
-    <dd>9082286717</dd>
+    <dd><%=rs.getString(5)%></dd>
+    
     <dt>Parent Phone Number</dt>
-    <dd>7039352963</dd>
+    <dd><%=rs.getString(4)%></dd>
+    
     <dt>Blood Group</dt>
-    <dd>B positive</dd>
+    <dd><%=rs.getString(9)%></dd>
+    
     <dt>Height</dt>
-    <dd>5ft. 6inches</dd>
+    <dd><%=rs.getString(10)%></dd>
+    
     <dt>Weight</dt>
-    <dd>63Kg</dd>
+    <dd><%=rs.getString(11)%></dd>
+    
     <dt>Course</dt>
-    <dd>Computer Engineering</dd>
+    <dd><%=rs.getString(13)%></dd>
+    
     <dt>Year</dt>
-    <dd>Second Year</dd>
+    <dd><%=rs.getString(12)%></dd>
+    
     <dt>Date Of Birth</dt>
-    <dd>10 Jan 2002</dd>
+    <dd><%=rs.getString(14)%></dd>
+    
     <dt>Address</dt>
-    <dd>Room No. 20, Bhandup(W), Mumbai-400078</dd>
-    <dt>Rented Books</dt>
-    <dd>Wings of fire</dd>
-  </dl>
-</div>
-</div>
+    <dd><%=rs.getString(8)%></dd>
 
+  </dl>
+  
+ 
+
+ 
+</div>
+</div>
+</div>
+<div class="mx-5 mb-5">
+  <button  class="btn btn-dark" onclick="printinfo('data')">Download</button>
+  </div>
+  
   </body>
+
+<script type="text/javascript">
+	function printinfo(paravalue){
+		var backup = document.body.innerHTML;
+		var data = document.getElementById(paravalue).innerHTML;
+		document.body.innerHTML = data;
+		window.print();
+		document.body.innerHTML = backup;
+		
+	}
+
+</script>
+  
 </html>
+
     
